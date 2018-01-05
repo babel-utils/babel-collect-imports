@@ -23,18 +23,19 @@ export type ResolveOptions = {
 */
 
 function getImportSources(filePath, parserOpts) {
-  let file = loadFileSync(filePath, parserOpts);
+  const fileReg = /^(?!\.(gif|jpg|png|ico|less|css|svg)$).*\.(gif|jpg|png|ico|less|css|svg)$/;
   let importSources = [];
-
-  for (let item of file.path.get('body')) {
-    if (
-      item.isImportDeclaration() ||
-      (item.isExportDeclaration() && item.node.source)
-    ) {
-      importSources.push(item.node.source.value);
+  if (!fileReg.test(filePath)) {
+    let file = loadFileSync(filePath, parserOpts);
+    for (let item of file.path.get('body')) {
+      if (
+        item.isImportDeclaration() ||
+        (item.isExportDeclaration() && item.node.source)
+      ) {
+        importSources.push(item.node.source.value);
+      }
     }
   }
-
   return importSources;
 }
 
