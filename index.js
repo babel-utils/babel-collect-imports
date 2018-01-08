@@ -57,7 +57,7 @@ function collectImportsSync(
   entry /*: string */,
   options /*: { extensions: Array<string> } */ = {extensions: ['js', 'jsx', 'babel']},
   parserOpts /*:: ?: ParserOptions */,
-  resolveOpts /*:: ?: ResolveOptions */,
+  resolveOpts /*:: ?: ResolveOptions */
   
 ) {
   let visited = {};
