@@ -22,26 +22,17 @@ export type ResolveOptions = {
 };
 */
 
-function getFileExtension(filename)
-{
-  var ext = /^.+\.([^.]+)$/.exec(filename);
-  return ext == null ? "" : ext[1];
-}
-
 function getImportSources(filePath, parserOpts, extensions) {
   let importSources = [];
-    if (extensions.indexOf(getFileExtension(filePath))> -1 ) {
-      let file = loadFileSync(filePath, parserOpts);
-      for (let item of file.path.get('body')) {
-        if (
-          item.isImportDeclaration() ||
-          (item.isExportDeclaration() && item.node.source)
-        ) {
-          importSources.push(item.node.source.value);
-        }
+  if (extensions.indexOf(path.extname(filePath).replace('.', ''))> -1 ) {
+    let file = loadFileSync(filePath, parserOpts);
+    for (let item of file.path.get('body')) {
+      if (item.isImportDeclaration() || (item.isExportDeclaration() && item.node.source)) {
+        importSources.push(item.node.source.value);
       }
     }
-
+  }
+  
   return importSources;
 }
 
@@ -55,7 +46,7 @@ const INTERNAL_MODULE_SOURCE = /^\./;
 
 function collectImportsSync(
   entry /*: string */,
-  options /*: { extensions: Array<string> } */ = {extensions: ['js', 'jsx', 'babel']},
+  options /*: { extensions: Array<string> } */ = { extensions: ['js', 'jsx', 'babel'] },
   parserOpts /*:: ?: ParserOptions */,
   resolveOpts /*:: ?: ResolveOptions */
   
