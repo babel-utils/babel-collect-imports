@@ -1,6 +1,6 @@
 {
   "name": "babel-collect-imports",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Recursively collect all the internal and external dependencies from an entry point",
   "main": "index.js",
   "repository": "https://github.com/babel-utils/babel-collect-imports",
