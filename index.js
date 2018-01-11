@@ -22,19 +22,17 @@ export type ResolveOptions = {
 };
 */
 
-function getImportSources(filePath, parserOpts) {
-  let file = loadFileSync(filePath, parserOpts);
+function getImportSources(filePath, parserOpts, extensions) {
   let importSources = [];
-
-  for (let item of file.path.get('body')) {
-    if (
-      item.isImportDeclaration() ||
-      (item.isExportDeclaration() && item.node.source)
-    ) {
-      importSources.push(item.node.source.value);
+  if (extensions.indexOf(path.extname(filePath).replace('.', ''))> -1 ) {
+    let file = loadFileSync(filePath, parserOpts);
+    for (let item of file.path.get('body')) {
+      if (item.isImportDeclaration() || (item.isExportDeclaration() && item.node.source)) {
+        importSources.push(item.node.source.value);
+      }
     }
   }
-
+  
   return importSources;
 }
 
@@ -48,8 +46,10 @@ const INTERNAL_MODULE_SOURCE = /^\./;
 
 function collectImportsSync(
   entry /*: string */,
+  options /*: { extensions: Array<string> } */ = { extensions: ['js', 'jsx', 'babel'] },
   parserOpts /*:: ?: ParserOptions */,
   resolveOpts /*:: ?: ResolveOptions */
+  
 ) {
   let visited = {};
   let queue = [entry];
@@ -58,7 +58,7 @@ function collectImportsSync(
 
   while (queue.length) {
     let filePath = queue.shift();
-    let importSources = getImportSources(filePath, parserOpts);
+    let importSources = getImportSources(filePath, parserOpts, options.extensions);
 
     for (let importSource of importSources) {
       if (INTERNAL_MODULE_SOURCE.test(importSource)) {
