@@ -1,6 +1,6 @@
 {
   "name": "babel-collect-imports",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Recursively collect all the internal and external dependencies from an entry point",
   "main": "index.js",
   "repository": "https://github.com/babel-utils/babel-collect-imports",
@@ -8,6 +8,7 @@
   "license": "MIT",
   "keywords": [
     "babel",
+    "babel@7",
     "babylon",
     "file",
     "imports",
@@ -22,8 +23,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "babel-file-loader": "^1.0.3",
-    "babel-flow-types": "^1.2.3",
+    "babel-file-loader": "^2.0.0",
     "resolve": "^1.5.0"
   },
   "devDependencies": {
